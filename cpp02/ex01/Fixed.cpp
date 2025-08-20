@@ -2,7 +2,6 @@
 #include <cmath>
 
 // Orthodox Canonical Form
-
 Fixed::Fixed() : _fixedPointValue(0) {
     std::cout << "Default constructor called" << std::endl;
 }
@@ -40,7 +39,6 @@ int Fixed::toInt() const {
     return _fixedPointValue >> _fractionalBits;
 }
 
-// Getter Setters
 int Fixed::getRawBits() const {
     return _fixedPointValue;
 }

@@ -37,6 +37,5 @@ void Harl::complain( std::string level )
             return;
         }
     }
-    
     std::cout << "Unknown level: " << level << std::endl;
 }

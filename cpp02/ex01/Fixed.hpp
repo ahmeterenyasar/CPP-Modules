@@ -15,15 +15,12 @@ public:
     Fixed& operator=(const Fixed& other);
     ~Fixed();
 
-    // Additional constructors
     Fixed(const int value);
     Fixed(const float value);
 
-    // Conversion functions
     float   toFloat() const;
     int     toInt() const;
 
-    // Getters and Setters
     int     getRawBits() const;
     void    setRawBits(int const raw);
 

@@ -29,14 +29,12 @@ Fixed::~Fixed()
     std::cout << "Destructor called" << std::endl;
 }
 
-// Returns the raw value of the fixed-point number
 int Fixed::getRawBits(void) const 
 {
     std::cout << "getRawBits member function called" << std::endl;
     return _val;
 }
 
-// Sets the raw value of the fixed-point number
 void Fixed::setRawBits(int const raw) 
 {
     _val = raw;

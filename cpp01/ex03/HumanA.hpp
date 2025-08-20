@@ -4,10 +4,11 @@
 #include "Weapon.hpp"
 #include <string>
 
-class HumanA {
+class HumanA 
+{
 private:
     std::string name;
-    Weapon& weapon;  // Reference - HumanA always has a weapon
+    Weapon& weapon;
 
 public:
     HumanA(const std::string& name, Weapon& weapon);

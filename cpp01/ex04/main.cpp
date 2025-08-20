@@ -5,7 +5,8 @@
 #include "replace.hpp"
 
 int main(int argc, char* argv[]) {
-    if (argc != 4) {
+    if (argc != 4) 
+    {
         std::cerr << "Usage: " << argv[0] << " <filename> <s1> <s2>" << std::endl;
         return 1;
     }
@@ -15,7 +16,8 @@ int main(int argc, char* argv[]) {
     std::string s2 = argv[3];
     
     std::ifstream inputFile(filename.c_str());
-    if (!inputFile.is_open()) {
+    if (!inputFile.is_open()) 
+    {
         std::cerr << "Error: Could not open file '" << filename << "'" << std::endl;
         return 1;
     }
