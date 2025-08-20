@@ -21,13 +21,10 @@ class Zombie {
 
     public:
         Zombie(std::string zombieName);
-    
         ~Zombie();
-        
         void announce(void);
 };
 
-/* Function Prototypes */
 Zombie* newZombie(std::string name);
 void    randomChump(std::string name);
 

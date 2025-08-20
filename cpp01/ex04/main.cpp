@@ -27,19 +27,16 @@ int main(int argc, char* argv[]) {
     std::string content = buffer.str();
     inputFile.close();
     
-    std::string modifiedContent = replaceOccurrences(content, s1, s2);
-    
-    // Create output filename
+    std::string result = replaceOccurrences(content, s1, s2);
+
     std::string outputFilename = filename + ".replace";
-    
-    // Write to output file
     std::ofstream outputFile(outputFilename.c_str());
     if (!outputFile.is_open()) {
         std::cerr << "Error: Could not create output file '" << outputFilename << "'" << std::endl;
         return 1;
     }
     
-    outputFile << modifiedContent;
+    outputFile << result;
     outputFile.close();
     
     std::cout << "File processed successfully. Output written to '" << outputFilename << "'" << std::endl;

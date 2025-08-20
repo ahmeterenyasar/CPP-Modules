@@ -15,21 +15,13 @@
 
 int main()
 {
-    std::cout << "=== newZombie heap allocation ===" << std::endl;
+    std::cout << "=== Heap allocation ===" << std::endl;
     Zombie* heapZombie = newZombie("HeapZombie");
     heapZombie->announce();
     delete heapZombie;
 
-    std::cout << "\n=== randomChump stack allocation ===" << std::endl;
+    std::cout << "\n=== Stack allocation ===" << std::endl;
     randomChump("StackZombie");
-    
-    std::cout << "\n=== direct stack allocation ===" << std::endl;
 
-    {
-        Zombie stackZombie("LocalUndeadZombie");
-        stackZombie.announce();
-    }
-
-    std::cout << "\n THE END." << std::endl;
     return 0;
 }

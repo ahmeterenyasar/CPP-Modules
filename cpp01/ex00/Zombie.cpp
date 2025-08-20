@@ -13,10 +13,8 @@
 #include "Zombie.hpp"
 #include <iostream>
 
-/* Constructor */
 Zombie::Zombie(std::string zombieName) : name(zombieName) {}
 
-/* Destructor */
 Zombie::~Zombie() {
     std::cout << name << " is destroyed" << std::endl;
 }

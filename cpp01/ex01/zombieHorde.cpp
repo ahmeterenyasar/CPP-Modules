@@ -1,10 +1,13 @@
 #include "Zombie.hpp"
 
 Zombie* zombieHorde(int N, std::string name) {
-    // Allocate N Zombie objects in a single allocation
-    Zombie* horde = new Zombie[N];
+    if (N <= 0) {
+        std::cout << "Error: Invalid horde size. Must be positive." << std::endl;
+        return NULL;
+    }
     
-    // Initialize each zombie with the given name
+    Zombie* horde = new Zombie[N];
+
     for (int i = 0; i < N; i++) {
         horde[i].setName(name);
     }

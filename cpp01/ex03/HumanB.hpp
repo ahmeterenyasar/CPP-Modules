@@ -6,8 +6,8 @@
 
 class HumanB {
 private:
-    std::string name;
-    Weapon* weapon;  // Pointer - HumanB may not always have a weapon
+    std::string _name;
+    Weapon* _weapon;  // Pointer - HumanB may not always have a weapon
 
 public:
     HumanB(const std::string& name);
