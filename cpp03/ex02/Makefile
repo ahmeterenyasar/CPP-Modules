@@ -6,11 +6,11 @@
 #    By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/23 15:23:07 by ayasar            #+#    #+#              #
-#    Updated: 2025/08/23 15:23:37 by ayasar           ###   ########.fr        #
+#    Updated: 2025/08/23 16:47:18 by ayasar           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME		= fixed
+NAME		= scavtrap
 
 CXX			= c++
 CXXFLAGS	= -Wall -Wextra -Werror -std=c++98
@@ -18,7 +18,7 @@ CXXFLAGS	= -Wall -Wextra -Werror -std=c++98
 SRCDIR		= .
 OBJDIR		= obj
 
-SOURCES		= main.cpp ClapTrap.cpp
+SOURCES		= main.cpp ClapTrap.cpp ScavTrap.cpp
 OBJECTS		= $(SOURCES:%.cpp=$(OBJDIR)/%.o)
 
 INCLUDES	= -I.
