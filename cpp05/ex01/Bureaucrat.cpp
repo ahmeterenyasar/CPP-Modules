@@ -57,10 +57,21 @@ void Bureaucrat::increseGrade() {
     _grade--;
 }
 
-void Bureaucrat::decreseGrade() {
+void Bureaucrat::decreaseGrade() {
     if (_grade + 1 > _lowestGrade)
         throw GradeTooLowException();
     _grade++;
+}
+
+void Bureaucrat::signForm(Form& form) {
+    try
+    {
+        std::cout << "X signed" << form << std::endl;
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "X couldn't sign " << form << ", because " << e.what() << std::endl;
+    }
 }
 
 /* Exception implementations */
