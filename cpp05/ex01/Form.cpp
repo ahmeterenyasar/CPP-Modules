@@ -1,0 +1,69 @@
+
+
+
+#include "Form.hpp"
+#include <iostream>
+
+Form::Form() : _name("Default Form"), _isSigned(false), _signGrade(150), _executeGrade(150) {}
+
+Form::Form(const std::string& name, int signGrade, int executeGrade) : _name(name), _isSigned(false), _signGrade(signGrade), _executeGrade(executeGrade) {
+    if (signGrade < _highestGrade || executeGrade < _highestGrade) {
+        throw GradeTooHighException();
+    }
+    if (signGrade > _lowestGrade || executeGrade > _lowestGrade) {
+        throw GradeTooLowException();
+    }
+    std::cout << "Form " << _name << " constructor called" << std::endl;
+}
+
+Form::Form(const Form& other) : _name(other._name), _isSigned(other._isSigned), _signGrade(other._signGrade), _executeGrade(other._executeGrade) {}
+
+Form& Form::operator=(const Form& other) {
+    if (this != &other)
+        _isSigned = other._isSigned;
+    return *this;
+}
+
+Form::~Form() {}
+
+const std::string& Form::getName() const {
+    return _name;     
+}
+
+bool Form::getIsSigned() const {
+    return _isSigned;
+}
+
+int Form::getGradeToExecute() const {
+    return _executeGrade;
+}
+
+int Form::getGradeToSign() const {
+    return _signGrade;
+}
+
+void Form::beSigned(Bureaucrat& bureaucrat){
+    if (bureaucrat.getGrade() > _signGrade)
+    {
+        throw GradeTooHighException();
+    }
+    _isSigned = true;
+}
+
+// Exception implementations
+const char* Form::GradeTooHighException::what() const throw() {
+    return "Grade is too high!";
+}
+
+const char* Form::GradeTooLowException::what() const throw() {
+    return "Grade is too low!";
+}
+
+// Insertion operator overload
+std::ostream& operator<<(std::ostream& out, const Form& form) {
+    out << "Form " << form.getName() 
+        << ", signed: " << (form.getIsSigned() ? "yes" : "no")
+        << ", grade required to sign: " << form.getGradeToSign()
+        << ", grade required to execute: " << form.getGradeToExecute();
+    return out;
+}

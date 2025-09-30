@@ -61,10 +61,10 @@ int Fixed::toInt(void) const
     return (roundf(static_cast<float>(_fixedPointValue) / (1 << _fractionalBit)));
 }
 
-std::ostream &operator<<(std::ostream &os, const Fixed &fixed)
+std::ostream &operator<<(std::ostream &out, const Fixed &fixed)
 {
-    os << fixed.toFloat();
-    return (os);
+    out << fixed.toFloat();
+    return (out);
 }
 
 bool Fixed::operator>(const Fixed &other) const

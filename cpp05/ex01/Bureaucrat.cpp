@@ -12,9 +12,7 @@
 
 #include "Bureaucrat.hpp"
 
-Bureaucrat::Bureaucrat() : _name("Default"), _grade(150) {
-    std::cout << "Bureaucrat default constructor called" << std::endl;
-}
+Bureaucrat::Bureaucrat() : _name("Default"), _grade(150) {}
 
 Bureaucrat::Bureaucrat(const std::string& name, int grade) : _name(name) {
     if (grade < _highestGrade) {
@@ -39,9 +37,7 @@ Bureaucrat& Bureaucrat::operator=(const Bureaucrat& other) {
     return *this;
 }
 
-Bureaucrat::~Bureaucrat() {
-    std::cout << "Bureaucrat " << _name << " destructor called" << std::endl;
-}
+Bureaucrat::~Bureaucrat() {}
 
 const std::string& Bureaucrat::getName() const {
     return _name;
@@ -66,11 +62,11 @@ void Bureaucrat::decreaseGrade() {
 void Bureaucrat::signForm(Form& form) {
     try
     {
-        std::cout << "X signed" << form << std::endl;
+        std::cout << _name << " signed" << form << std::endl;
     }
     catch(const std::exception& e)
     {
-        std::cout << "X couldn't sign " << form << ", because " << e.what() << std::endl;
+        std::cout << _name << " couldn't sign " << form << ", because " << e.what() << std::endl;
     }
 }
 
