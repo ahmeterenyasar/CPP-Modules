@@ -4,9 +4,10 @@
 #include "Form.hpp"
 #include <iostream>
 
-Form::Form() : _name("Default Form"), _isSigned(false), _signGrade(150), _executeGrade(150) {}
+Form::Form() : _isSigned(false), _signGrade(150), _executeGrade(150), _name("Default Form") {}
 
-Form::Form(const std::string& name, int signGrade, int executeGrade) : _name(name), _isSigned(false), _signGrade(signGrade), _executeGrade(executeGrade) {
+Form::Form(const std::string& name, int signGrade, int executeGrade)
+    : _isSigned(false), _signGrade(signGrade), _executeGrade(executeGrade), _name(name) {
     if (signGrade < _highestGrade || executeGrade < _highestGrade) {
         throw GradeTooHighException();
     }
@@ -16,7 +17,8 @@ Form::Form(const std::string& name, int signGrade, int executeGrade) : _name(nam
     std::cout << "Form " << _name << " constructor called" << std::endl;
 }
 
-Form::Form(const Form& other) : _name(other._name), _isSigned(other._isSigned), _signGrade(other._signGrade), _executeGrade(other._executeGrade) {}
+Form::Form(const Form& other)
+    : _isSigned(other._isSigned), _signGrade(other._signGrade), _executeGrade(other._executeGrade), _name(other._name) {}
 
 Form& Form::operator=(const Form& other) {
     if (this != &other)
