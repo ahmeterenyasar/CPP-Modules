@@ -18,14 +18,14 @@
 
 int main() {
     try {
-        Bureaucrat bob("Bob", 130);
+        Bureaucrat ahmet("Ahmet", 130);
         ShrubberyCreationForm shrub("home");
         
-        std::cout << bob << std::endl;
+        std::cout << ahmet << std::endl;
         std::cout << shrub << std::endl;
         
-        bob.signForm(shrub);
-        bob.executeForm(shrub);
+        ahmet.signForm(shrub);
+        ahmet.executeForm(shrub);
     } catch (std::exception& e) {
         std::cout << "Exception: " << e.what() << std::endl;
     }
@@ -33,17 +33,17 @@ int main() {
     std::cout << "-----------------------------------" << std::endl;
     
     try {
-        Bureaucrat alice("Alice", 40);
+        Bureaucrat mehmet("Mehmet", 40);
         RobotomyRequestForm robot("Bender");
 
-        std::cout << alice << std::endl;
+        std::cout << mehmet << std::endl;
         std::cout << robot << std::endl;
         
-        alice.signForm(robot);
+        mehmet.signForm(robot);
         // Test 50% success rate
-        alice.executeForm(robot);
-        alice.executeForm(robot); 
-        alice.executeForm(robot);
+        mehmet.executeForm(robot);
+        mehmet.executeForm(robot); 
+        mehmet.executeForm(robot);
     } catch (std::exception& e) {
         std::cout << "Exception: " << e.what() << std::endl;
     }
@@ -52,7 +52,7 @@ int main() {
     
     try {
         Bureaucrat president("President", 1);
-        PresidentialPardonForm pardon("Arthur Dent");
+        PresidentialPardonForm pardon("Ahmet Yasin Akyuz");
         
         std::cout << president << std::endl;
         std::cout << pardon << std::endl;

@@ -31,24 +31,18 @@ const Intern::FormFactory Intern::_formFactories[3] = {
     {"presidential pardon", &Intern::createPresidentialPardonForm}
 };
 
-Intern::Intern() {
-    std::cout << "Intern constructor called" << std::endl;
-}
+Intern::Intern() {}
 
 Intern::Intern(const Intern& other) {
     (void)other;
-    std::cout << "Intern copy constructor called" << std::endl;
 }
 
 Intern& Intern::operator=(const Intern& other) {
     (void)other;
-    std::cout << "Intern copy assignment operator called" << std::endl;
     return *this;
 }
 
-Intern::~Intern() {
-    std::cout << "Intern destructor called" << std::endl;
-}
+Intern::~Intern() {}
 
 AForm* Intern::makeForm(const std::string& formName, const std::string& target) {
     for (int i = 0; i < 3; i++) {

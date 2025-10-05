@@ -91,3 +91,4 @@ std::ostream& operator<<(std::ostream& out, const AForm& form) {
         << ", grade required to execute: " << form.getGradeToExecute();
     return out;
 }
+

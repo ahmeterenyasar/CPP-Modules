@@ -45,15 +45,26 @@ void ShrubberyCreationForm::executeAction() const {
         return;
     }
 
-    file << "      *\n";
-    file << "     /~\\\n";
-    file << "    /~~~\\\n";
-    file << "   /~~~~~\\\n";
-    file << "  /~~~~~~~\\\n";
-    file << " /_________\\\n";
-    file << "     |||\n";
-    file << "     |||\n";
-    file << "     |||\n";
+    file << "           *\n";
+    file << "          /~\\\n";
+    file << "         /~~~\\\n";
+    file << "        /~~~~~\\\n";
+    file << "       /~~~~~~~\\\n";
+    file << "      /_________\\\n";
+    file << "          |||\n";
+    file << "          |||\n";
+    file << "          |||\n";
+    file << "\n";
+    file << "\n";
+    file << "      *             *\n";
+    file << "     /~\\           /~\\\n";
+    file << "    /~~~\\         /~~~\\\n";
+    file << "   /~~~~~\\       /~~~~~\\\n";
+    file << "  /~~~~~~~\\     /~~~~~~~\\\n";
+    file << " /_________\\   /_________\\\n";
+    file << "     |||           |||\n";
+    file << "     |||           |||\n";
+    file << "     |||           |||\n";
     
     file.close();
     std::cout << "Shrubbery has been planted at " << _target << std::endl;

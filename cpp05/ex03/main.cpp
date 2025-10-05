@@ -19,12 +19,12 @@
 
 int main() {
     try {
-        Intern someRandomIntern;
+        Intern intern;
         Bureaucrat president("President", 1);
         AForm* form;
         
         std::cout << "\n--- Creating Robotomy Request Form ---" << std::endl;
-        form = someRandomIntern.makeForm("robotomy request", "Bender");
+        form = intern.makeForm("robotomy request", "Bender");
         if (form) {
             std::cout << *form << std::endl;
             president.signForm(*form);
@@ -33,7 +33,7 @@ int main() {
         }
         
         std::cout << "\n--- Creating Shrubbery Creation Form ---" << std::endl;
-        form = someRandomIntern.makeForm("shrubbery creation", "home");
+        form = intern.makeForm("shrubbery creation", "home");
         if (form) {
             std::cout << *form << std::endl;
             president.signForm(*form);
@@ -42,7 +42,7 @@ int main() {
         }
         
         std::cout << "\n--- Creating Presidential Pardon Form ---" << std::endl;
-        form = someRandomIntern.makeForm("presidential pardon", "Ahmet Yasin Akyüz");
+        form = intern.makeForm("presidential pardon", "Ahmet Yasin Akyüz");
         if (form) {
             std::cout << *form << std::endl;
             president.signForm(*form);
