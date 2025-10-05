@@ -44,7 +44,6 @@ public:
     void execute(Bureaucrat const & executor) const;
     virtual void executeAction() const = 0;
 
-    // LOOK public kavramını silince de çalışıyor neden var o zaman?
     class GradeTooHighException : public std::exception
     {
     public:

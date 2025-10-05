@@ -35,10 +35,9 @@ public:
     const std::string& getName() const;
     int getGrade() const;
 
-    void increseGrade();
-    void decreseGrade();
+    void increaseGrade();
+    void decreaseGrade();
 
-    // Exception classes
     class GradeTooHighException : public std::exception {
     public:
         virtual const char* what() const throw();
@@ -50,7 +49,6 @@ public:
     };
 };
 
-// Overload of insertion operator
 std::ostream& operator<<(std::ostream& out, const Bureaucrat& bureaucrat);
 
 #endif

@@ -47,7 +47,7 @@ int Bureaucrat::getGrade() const {
     return _grade;
 }
 
-void Bureaucrat::increseGrade() {
+void Bureaucrat::increaseGrade() {
     if (_grade - 1 < _highestGrade)
         throw GradeTooHighException();
     _grade--;
@@ -83,7 +83,6 @@ void Bureaucrat::executeForm(AForm const & form) const {
     }
 }
 
-/* Exception implementations */
 const char* Bureaucrat::GradeTooHighException::what() const throw() {
     return "Grade is too high!";
 }
@@ -92,7 +91,6 @@ const char* Bureaucrat::GradeTooLowException::what() const throw() {
     return "Grade is too low!";
 }
 
-// Insertion operator overload
 std::ostream& operator<<(std::ostream& out, const Bureaucrat& bureaucrat) {
     out << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade();
     return out;

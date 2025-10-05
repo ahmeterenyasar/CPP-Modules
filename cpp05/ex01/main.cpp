@@ -3,7 +3,6 @@
 #include <iostream>
 
 int main() {
-    std::cout << "=== Test 1: Valid form creation ===" << std::endl;
     try {
         Form formA("Form A", 50, 25);
         std::cout << formA << std::endl;
@@ -11,15 +10,17 @@ int main() {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
 
-    std::cout << "\n=== Test 2: Form with grade too high (0) ===" << std::endl;
+    std::cout << "-----------------------------------" << std::endl;
+
     try {
         Form invalidForm("Invalid", 0, 50);
         std::cout << invalidForm << std::endl;
     } catch (std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
+    
+    std::cout << "-----------------------------------" << std::endl;
 
-    std::cout << "\n=== Test 3: Form with grade too low (151) ===" << std::endl;
     try {
         Form invalidForm("Invalid", 50, 151);
         std::cout << invalidForm << std::endl;
@@ -27,43 +28,47 @@ int main() {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
 
-    std::cout << "\n=== Test 4: Bureaucrat successfully signs form ===" << std::endl;
+    std::cout << "-----------------------------------" << std::endl;
+    
     try {
-        Bureaucrat alice("Alice", 30);
+        Bureaucrat ahmet("Ahmet", 30);
         Form formB("Form B", 50, 25);
-        std::cout << alice << std::endl;
+        std::cout << ahmet << std::endl;
         std::cout << formB << std::endl;
-        alice.signForm(formB);
+        ahmet.signForm(formB);
         std::cout << formB << std::endl;
     } catch (std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
 
-    std::cout << "\n=== Test 5: Bureaucrat fails to sign (grade too low) ===" << std::endl;
+    std::cout << "-----------------------------------" << std::endl;
+
     try {
-        Bureaucrat bob("Bob", 100);
+        Bureaucrat mehmet("Mehmet", 100);
         Form formC("Form C", 50, 25);
-        std::cout << bob << std::endl;
+        std::cout << mehmet << std::endl;
         std::cout << formC << std::endl;
-        bob.signForm(formC);
+        mehmet.signForm(formC);
         std::cout << formC << std::endl;
     } catch (std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
 
-    std::cout << "\n=== Test 6: Edge case - bureaucrat grade equals required grade ===" << std::endl;
+    std::cout << "-----------------------------------" << std::endl;
+
     try {
-        Bureaucrat charlie("Charlie", 50);
+        Bureaucrat ayse("Ayse", 50);
         Form formD("Form D", 50, 25);
-        std::cout << charlie << std::endl;
+        std::cout << ayse << std::endl;
         std::cout << formD << std::endl;
-        charlie.signForm(formD);
+        ayse.signForm(formD);
         std::cout << formD << std::endl;
     } catch (std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
 
-    std::cout << "\n=== Test 7: Multiple bureaucrats signing different forms ===" << std::endl;
+    std::cout << "-----------------------------------" << std::endl;
+
     try {
         Bureaucrat topBureaucrat("Top", 1);
         Bureaucrat midBureaucrat("Mid", 75);
@@ -75,8 +80,7 @@ int main() {
         topBureaucrat.signForm(hardForm);
         
         std::cout << "\nMid bureaucrat attempts:" << std::endl;
-        midBureaucrat.signForm(easyForm); // Already signed
-        // Create a new form for mid bureaucrat
+        midBureaucrat.signForm(easyForm);
         Form mediumForm("Medium Form", 80, 60);
         midBureaucrat.signForm(mediumForm);
         
@@ -88,7 +92,8 @@ int main() {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
 
-    std::cout << "\n=== Test 8: Form with highest and lowest grades ===" << std::endl;
+    std::cout << "-----------------------------------" << std::endl;
+
     try {
         Form maxSecurityForm("Max Security", 1, 1);
         Form minSecurityForm("Min Security", 150, 150);
@@ -110,7 +115,5 @@ int main() {
     } catch (std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
-
-    std::cout << "\n=== All tests completed ===" << std::endl;
     return 0;
 }

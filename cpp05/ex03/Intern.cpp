@@ -13,7 +13,6 @@
 #include "Intern.hpp"
 #include <iostream>
 
-// Static factory functions
 AForm* Intern::createShrubberyCreationForm(const std::string& target) {
     return new ShrubberyCreationForm(target);
 }
@@ -26,7 +25,6 @@ AForm* Intern::createPresidentialPardonForm(const std::string& target) {
     return new PresidentialPardonForm(target);
 }
 
-// Static array of form factories
 const Intern::FormFactory Intern::_formFactories[3] = {
     {"shrubbery creation", &Intern::createShrubberyCreationForm},
     {"robotomy request", &Intern::createRobotomyRequestForm},

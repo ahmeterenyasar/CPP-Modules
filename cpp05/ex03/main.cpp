@@ -18,8 +18,6 @@
 #include <iostream>
 
 int main() {
-    std::cout << "=== Testing Intern makeForm() ===" << std::endl;
-    
     try {
         Intern someRandomIntern;
         Bureaucrat president("President", 1);
@@ -44,7 +42,7 @@ int main() {
         }
         
         std::cout << "\n--- Creating Presidential Pardon Form ---" << std::endl;
-        form = someRandomIntern.makeForm("presidential pardon", "Arthur Dent");
+        form = someRandomIntern.makeForm("presidential pardon", "Ahmet Yasin Akyüz");
         if (form) {
             std::cout << *form << std::endl;
             president.signForm(*form);
@@ -56,7 +54,8 @@ int main() {
         std::cout << "Exception: " << e.what() << std::endl;
     }
     
-    std::cout << "\n=== Testing Invalid Form Name ===" << std::endl;
+    std::cout << "-----------------------------------" << std::endl;
+
     try {
         Intern intern;
         AForm* invalidForm = intern.makeForm("invalid form", "target");
@@ -67,7 +66,8 @@ int main() {
         std::cout << "Exception caught: " << e.what() << std::endl;
     }
     
-    std::cout << "\n=== Testing Multiple Interns ===" << std::endl;
+    std::cout << "-----------------------------------" << std::endl;
+    
     try {
         Intern intern1;
         Intern intern2;
@@ -94,19 +94,17 @@ int main() {
         std::cout << "Exception: " << e.what() << std::endl;
     }
     
-    std::cout << "\n=== Testing Case Sensitivity ===" << std::endl;
+    std::cout << "-----------------------------------" << std::endl;
+    
     try {
         Intern intern;
         AForm* form;
-        
-        // Test exact case
         form = intern.makeForm("robotomy request", "Test1");
         if (form) {
             std::cout << "Exact case worked: " << *form << std::endl;
             delete form;
         }
         
-        // Test different case (should fail)
         form = intern.makeForm("Robotomy Request", "Test2");
         if (form) {
             delete form;
@@ -115,25 +113,5 @@ int main() {
     } catch (std::exception& e) {
         std::cout << "Case sensitivity test - Exception: " << e.what() << std::endl;
     }
-    
-    std::cout << "\n=== Testing Copy Constructor and Assignment ===" << std::endl;
-    try {
-        Intern original;
-        Intern copy(original);
-        Intern assigned;
-        assigned = original;
-        
-        AForm* form1 = original.makeForm("shrubbery creation", "original");
-        AForm* form2 = copy.makeForm("shrubbery creation", "copy");
-        AForm* form3 = assigned.makeForm("shrubbery creation", "assigned");
-        
-        if (form1) delete form1;
-        if (form2) delete form2;
-        if (form3) delete form3;
-        
-    } catch (std::exception& e) {
-        std::cout << "Exception: " << e.what() << std::endl;
-    }
-    
     return 0;
 }

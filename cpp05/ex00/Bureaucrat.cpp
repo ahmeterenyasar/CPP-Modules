@@ -12,9 +12,7 @@
 
 #include "Bureaucrat.hpp"
 
-Bureaucrat::Bureaucrat() : _name("Default"), _grade(150) {
-    std::cout << "Bureaucrat default constructor called" << std::endl;
-}
+Bureaucrat::Bureaucrat() : _name("Default"), _grade(150) {}
 
 Bureaucrat::Bureaucrat(const std::string& name, int grade) : _name(name) {
     if (grade < _highestGrade) {
@@ -39,9 +37,7 @@ Bureaucrat& Bureaucrat::operator=(const Bureaucrat& other) {
     return *this;
 }
 
-Bureaucrat::~Bureaucrat() {
-    std::cout << "Bureaucrat " << _name << " destructor called" << std::endl;
-}
+Bureaucrat::~Bureaucrat() {}
 
 const std::string& Bureaucrat::getName() const {
     return _name;
@@ -51,19 +47,18 @@ int Bureaucrat::getGrade() const {
     return _grade;
 }
 
-void Bureaucrat::increseGrade() {
+void Bureaucrat::increaseGrade() {
     if (_grade - 1 < _highestGrade)
         throw GradeTooHighException();
     _grade--;
 }
 
-void Bureaucrat::decreseGrade() {
+void Bureaucrat::decreaseGrade() {
     if (_grade + 1 > _lowestGrade)
         throw GradeTooLowException();
     _grade++;
 }
 
-/* Exception implementations */
 const char* Bureaucrat::GradeTooHighException::what() const throw() {
     return "Grade is too high!";
 }
@@ -72,7 +67,6 @@ const char* Bureaucrat::GradeTooLowException::what() const throw() {
     return "Grade is too low!";
 }
 
-// Insertion operator overload
 std::ostream& operator<<(std::ostream& out, const Bureaucrat& bureaucrat) {
     out << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade();
     return out;

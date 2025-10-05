@@ -40,12 +40,11 @@ public:
     const std::string &getName() const;
     int getGrade() const;
 
-    void increseGrade();
+    void increaseGrade();
     void decreaseGrade();
 
     void signForm(Form &form);
 
-    // Exception classes
     class GradeTooHighException : public std::exception
     {
     public:
@@ -59,7 +58,6 @@ public:
     };
 };
 
-// Overload of insertion operator
 std::ostream &operator<<(std::ostream &out, const Bureaucrat &bureaucrat);
 
 #endif

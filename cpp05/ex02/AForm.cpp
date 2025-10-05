@@ -72,7 +72,6 @@ void AForm::execute(Bureaucrat const & executor) const {
     executeAction();
 }
 
-// Exception implementations
 const char* AForm::GradeTooHighException::what() const throw() {
     return "Grade is too high!";
 }
@@ -85,7 +84,6 @@ const char* AForm::FormNotSignedException::what() const throw() {
     return "Form is not signed!";
 }
 
-// Insertion operator overload
 std::ostream& operator<<(std::ostream& out, const AForm& form) {
     out << "AForm " << form.getName() 
         << ", signed: " << (form.getIsSigned() ? "yes" : "no")
