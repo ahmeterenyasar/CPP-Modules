@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 18:20:42 by ayasar            #+#    #+#             */
-/*   Updated: 2025/10/10 18:20:44 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/10/10 19:29:49 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,9 @@
 
 class Intern {
 private:
-    struct FormFactory {
-        std::string formName;
-        AForm* (*createFunction)(const std::string& target);
-    };
-    
     static AForm* createShrubberyCreationForm(const std::string& target);
     static AForm* createRobotomyRequestForm(const std::string& target);
     static AForm* createPresidentialPardonForm(const std::string& target);
-    
-    static const FormFactory _formFactories[3];
     
 public:
     Intern();
