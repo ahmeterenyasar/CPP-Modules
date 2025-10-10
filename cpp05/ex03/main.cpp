@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 18:20:47 by ayasar            #+#    #+#             */
-/*   Updated: 2025/10/10 18:45:42 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/10/10 19:42:22 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,26 +92,6 @@ int main() {
         
     } catch (std::exception& e) {
         std::cout << "Exception: " << e.what() << std::endl;
-    }
-    
-    std::cout << "-----------------------------------" << std::endl;
-    
-    try {
-        Intern intern;
-        AForm* form;
-        form = intern.makeForm("robotomy request", "Test1");
-        if (form) {
-            std::cout << "Exact case worked: " << *form << std::endl;
-            delete form;
-        }
-        
-        form = intern.makeForm("Robotomy Request", "Test2");
-        if (form) {
-            delete form;
-        }
-        
-    } catch (std::exception& e) {
-        std::cout << "Case sensitivity test - Exception: " << e.what() << std::endl;
     }
     return 0;
 }
