@@ -66,54 +66,5 @@ int main() {
     } catch (std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
-
-    std::cout << "-----------------------------------" << std::endl;
-
-    try {
-        Bureaucrat topBureaucrat("Top", 1);
-        Bureaucrat midBureaucrat("Mid", 75);
-        Form easyForm("Easy Form", 100, 50);
-        Form hardForm("Hard Form", 10, 5);
-        
-        std::cout << "\nTop bureaucrat attempts:" << std::endl;
-        topBureaucrat.signForm(easyForm);
-        topBureaucrat.signForm(hardForm);
-        
-        std::cout << "\nMid bureaucrat attempts:" << std::endl;
-        midBureaucrat.signForm(easyForm);
-        Form mediumForm("Medium Form", 80, 60);
-        midBureaucrat.signForm(mediumForm);
-        
-        std::cout << "\nFinal form states:" << std::endl;
-        std::cout << easyForm << std::endl;
-        std::cout << hardForm << std::endl;
-        std::cout << mediumForm << std::endl;
-    } catch (std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
-    }
-
-    std::cout << "-----------------------------------" << std::endl;
-
-    try {
-        Form maxSecurityForm("Max Security", 1, 1);
-        Form minSecurityForm("Min Security", 150, 150);
-        
-        Bureaucrat ceo("CEO", 1);
-        Bureaucrat intern("Intern", 150);
-        
-        std::cout << "\nCEO signing max security form:" << std::endl;
-        ceo.signForm(maxSecurityForm);
-        
-        std::cout << "\nIntern signing min security form:" << std::endl;
-        intern.signForm(minSecurityForm);
-        
-        std::cout << "\nIntern trying max security form:" << std::endl;
-        intern.signForm(maxSecurityForm);
-        
-        std::cout << maxSecurityForm << std::endl;
-        std::cout << minSecurityForm << std::endl;
-    } catch (std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
-    }
     return 0;
 }

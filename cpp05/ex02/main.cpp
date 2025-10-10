@@ -39,8 +39,8 @@ int main() {
         std::cout << mehmet << std::endl;
         std::cout << robot << std::endl;
         
+        std::cout << "\n\nTest 50 percent success rate" << std::endl;
         mehmet.signForm(robot);
-        // Test 50% success rate
         mehmet.executeForm(robot);
         mehmet.executeForm(robot); 
         mehmet.executeForm(robot);
@@ -85,7 +85,6 @@ int main() {
         
         std::cout << boss << std::endl;
         std::cout << shrub << std::endl;
-        
         boss.executeForm(shrub);
     } catch (std::exception& e) {
         std::cout << "Exception: " << e.what() << std::endl;
