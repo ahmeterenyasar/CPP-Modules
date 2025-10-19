@@ -47,16 +47,7 @@ public:
             delete[] _elements;
     }
 
-    // Subscript operator: Access elements with bounds checking
     T & operator[](unsigned int index)
-    {
-        if (index >= _size)
-            throw OutOfBoundsException();
-        return _elements[index];
-    }
-
-    // Const subscript operator: Access elements with bounds checking
-    T const & operator[](unsigned int index) const
     {
         if (index >= _size)
             throw OutOfBoundsException();

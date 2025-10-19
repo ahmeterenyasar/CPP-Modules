@@ -2,7 +2,7 @@
 #include <string>
 #include "iter.hpp"
 
-// Function templates that can be instantiated
+
 template <typename T>
 void printElement(T const & element)
 {
@@ -16,25 +16,9 @@ void incrementElement(T & element)
 }
 
 
-// Regular functions
-void printInt(int const & n)
-{
-    std::cout << n << " ";
-}
 
-void printString(std::string const & s)
-{
-    std::cout << s << " ";
-}
 
-void toUpperCase(std::string & s)
-{
-    for (size_t i = 0; i < s.length(); i++)
-    {
-        if (s[i] >= 'a' && s[i] <= 'z')
-            s[i] = s[i] - 32;
-    }
-}
+
 
 int main(void)
 {
@@ -51,17 +35,6 @@ int main(void)
     std::cout << std::endl;
 
     std::cout << "---------------------------------" << std::endl;
-    std::cout << "Read only since const:" << std::endl;
-
-    const int constArray[] = {100, 200, 300};
-    size_t constArrayLen = 3;
-    
-    std::cout << "Const elements: ";
-    ::iter(constArray, constArrayLen, printElement<int>);
-    std::cout << std::endl;
-
-    std::cout << "---------------------------------" << std::endl;
-
 
     char charArray[] = {'a', 'b', 'c', 'd', 'e'};
     size_t charArrayLen = 5;
