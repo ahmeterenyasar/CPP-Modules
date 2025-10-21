@@ -47,3 +47,10 @@ int Span::longestSpan() {
         std::vector<int>::const_iterator minIter = std::min_element(_vect.begin(), _vect.end());
         return(*maxIter - *minIter);
 }
+
+void Span::multipleAdd(std::vector<int>::iterator begin, std::vector<int>::iterator end)
+{
+	if (_vect.size() + std::distance(begin, end) > this->_N)
+		throw std::out_of_range("ERROR : Range Filling would outgrow the Span instance");
+	this->_vect.insert(_vect.begin(), begin, end);
+}

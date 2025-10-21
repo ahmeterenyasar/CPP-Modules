@@ -23,16 +23,8 @@ class Span {
         int shortestSpan();
         int longestSpan();
 
-        template <typename Iterator>
-        void addNumbers(Iterator begin, Iterator end) {
-            while (begin != end)
-            {
-                if (_vect.size() >= _N)
-                    throw std::length_error("Span is full!!!");
-                _vect.push_back(*begin);
-                ++begin;
-            }
-        }
+        void multipleAdd(std::vector<int>::iterator begin, std::vector<int>::iterator end);
+
 
     class SpanFullException : public std::exception {
     public:
