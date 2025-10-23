@@ -92,12 +92,8 @@ int main()
 
     std::cout << "Printing the list:" << std::endl;
 
-    int i = 0;
-    while (dupTest[i])
-    {
+    for (int i = 0; i < 11; i++)
         std::cout << dupTest[i] << std::endl;
-        i++;
-    }
 
     std::cout << std::endl;
     try

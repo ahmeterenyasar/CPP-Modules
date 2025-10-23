@@ -25,6 +25,7 @@ class Span {
 
         void multipleAdd(std::vector<int>::iterator begin, std::vector<int>::iterator end);
 
+        void print() const;
 
     class SpanFullException : public std::exception {
     public:
