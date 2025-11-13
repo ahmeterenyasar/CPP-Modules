@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   BitcoinExchange.cpp                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/13 17:01:26 by ayasar            #+#    #+#             */
+/*   Updated: 2025/11/13 17:01:27 by ayasar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "BitcoinExchange.hpp"
 #include <fstream>
 #include <sstream>
@@ -6,7 +18,6 @@
 #include <limits>
 
 BitcoinExchange::BitcoinExchange() {}
-
 BitcoinExchange::~BitcoinExchange() {}
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange& other) {
@@ -23,18 +34,42 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other) {
 std::string BitcoinExchange::trim(const std::string& str) const {
 	size_t start = 0;
 	size_t end = str.length();
-
 	while (start < end && std::isspace(str[start]))
 		start++;
+	
 	while (end > start && std::isspace(str[end - 1]))
 		end--;
 
 	return str.substr(start, end - start);
 }
 
+/***
+ * Leap Year Rules:
+ * - Can be divided by 4 AND not divided by 100
+ * - OR Can be divided by 400
+ * - Otherwise, not a leap year
+ * 
+ * Examples:
+ * - 2000: leap year (divisible by 400)
+ * - 1900: not a leap year (divisible by 100 but not by 400)
+ * - 2004: leap year (divisible by 4, not by 100)
+ * - 2001: not a leap year (not divisible by 4)
+ ***/
+bool BitcoinExchange::isLeapYear(int year) const {
+	if (year % 400 == 0)
+		return true;
+	if (year % 100 == 0)
+		return false;
+	if (year % 4 == 0)
+		return true;
+	
+	return false;
+}
+
 bool BitcoinExchange::isValidDate(const std::string& date) const {
 	if (date.length() != 10)
 		return false;
+	
 	if (date[4] != '-' || date[7] != '-')
 		return false;
 
@@ -51,15 +86,19 @@ bool BitcoinExchange::isValidDate(const std::string& date) const {
 	if (year < 0 || month < 1 || month > 12 || day < 1 || day > 31)
 		return false;
 
-	// Check for valid days in month
 	if (month == 2) {
-		bool isLeap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-		if (day > (isLeap ? 29 : 28))
-			return false;
+		if (isLeapYear(year)) {
+			if (day > 29)
+				return false;
+		} else {
+			if (day > 28)
+				return false;
+		}
 	} else if (month == 4 || month == 6 || month == 9 || month == 11) {
 		if (day > 30)
 			return false;
 	}
+	
 	return true;
 }
 
@@ -104,7 +143,6 @@ void BitcoinExchange::loadDatabase(const std::string& filename) {
 
 std::string BitcoinExchange::findClosestDate(const std::string& date) const {
 	std::map<std::string, float>::const_iterator it = _database.lower_bound(date);
-
 	if (it != _database.end() && it->first == date) {
 		return it->first;
 	}
@@ -124,7 +162,7 @@ void BitcoinExchange::processInputFile(const std::string& filename) {
 	}
 
 	std::string line;
-	std::getline(file, line); // Skip header
+	std::getline(file, line);
 
 	while (std::getline(file, line)) {
 		size_t pipePos = line.find('|');

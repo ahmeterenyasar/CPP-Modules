@@ -1,12 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   PmergeMe.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/13 17:19:48 by ayasar            #+#    #+#             */
+/*   Updated: 2025/11/13 18:05:10 by ayasar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "PmergeMe.hpp"
 
-PmergeMe::PmergeMe() : _vectorTime(0), _dequeTime(0)
-{
-}
-
-PmergeMe::~PmergeMe()
-{
-}
+PmergeMe::PmergeMe() : _vectorTime(0), _dequeTime(0) {}
 
 PmergeMe::PmergeMe(const PmergeMe& other)
 {
@@ -19,40 +25,63 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other)
 	{
 		_vectorData = other._vectorData;
 		_dequeData = other._dequeData;
+		_originalData = other._originalData;
 		_vectorTime = other._vectorTime;
 		_dequeTime = other._dequeTime;
 	}
 	return *this;
 }
 
-void PmergeMe::validateInput(const std::string& str)
+PmergeMe::~PmergeMe()
 {
-	if (str.empty())
-		throw std::invalid_argument("Error");
-	
-	// Check if it starts with a sign
-	size_t i = 0;
-	if (str[0] == '+')
-		i = 1;
-	else if (str[0] == '-')
-		throw std::invalid_argument("Error");
-	
-	if (i >= str.length())
-		throw std::invalid_argument("Error");
-	
-	// Check if all remaining characters are digits
-	for (; i < str.length(); i++)
+}
+
+// Input validations
+bool PmergeMe::hasOnlyDigits(const std::string& str, size_t start) const
+{
+	for (size_t i = start; i < str.length(); i++)
 	{
-		if (!isdigit(str[i]))
-			throw std::invalid_argument("Error");
+		if (!std::isdigit(static_cast<unsigned char>(str[i])))
+			return false;
 	}
-	
-	// Convert and check range
+	return true;
+}
+
+bool PmergeMe::isInIntRange(const std::string& str) const
+{
 	std::stringstream ss(str);
 	long num;
 	ss >> num;
 	
-	if (ss.fail() || num < 0 || num > 2147483647)
+	if (ss.fail() || num < 0 || num > INT_MAX)
+		return false;
+	return true;
+}
+
+bool PmergeMe::isValidNumber(const std::string& str) const
+{
+	if (str.empty())
+		return false;
+	
+	size_t start = 0;
+	
+	if (str[0] == '+')
+		start = 1;
+	else if (str[0] == '-')
+		return false;
+	
+	if (start >= str.length())
+		return false;
+	
+	if (!hasOnlyDigits(str, start))
+		return false;
+	
+	return isInIntRange(str);
+}
+
+void PmergeMe::validateInput(const std::string& str)
+{
+	if (!isValidNumber(str))
 		throw std::invalid_argument("Error");
 }
 
@@ -79,11 +108,32 @@ void PmergeMe::parseInput(int argc, char** argv)
 		throw std::invalid_argument("Error");
 }
 
+// Time Measurement
 double PmergeMe::getTimeInMicroseconds(struct timeval start, struct timeval end)
 {
 	return (end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
 }
 
+double PmergeMe::measureVectorSort()
+{
+	struct timeval start, end;
+	gettimeofday(&start, NULL);
+	mergeInsertSortVector(_vectorData);
+	gettimeofday(&end, NULL);
+	return getTimeInMicroseconds(start, end);
+}
+
+double PmergeMe::measureDequeSort()
+{
+	struct timeval start, end;
+	gettimeofday(&start, NULL);
+	mergeInsertSortDeque(_dequeData);
+	gettimeofday(&end, NULL);
+	return getTimeInMicroseconds(start, end);
+}
+
+
+// Jacobsthal Sequence
 int PmergeMe::jacobsthal(int n)
 {
 	if (n == 0)
@@ -124,6 +174,31 @@ std::vector<int> PmergeMe::generateInsertionOrder(int n)
 	}
 	
 	return order;
+}
+
+
+// Vector Helper Methods
+void PmergeMe::createPairsVector(std::vector<int>& arr, std::vector<std::pair<int, int> >& pairs, int& straggler, bool& hasStraggler)
+{
+	size_t i;
+	for (i = 0; i + 1 < arr.size(); i += 2)
+	{
+		if (arr[i] > arr[i + 1])
+			pairs.push_back(std::make_pair(arr[i + 1], arr[i]));
+		else
+			pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
+	}
+	
+	// Handle odd element (straggler)
+	hasStraggler = (i < arr.size());
+	if (hasStraggler)
+		straggler = arr[i];
+}
+
+void PmergeMe::insertStragglerVector(std::vector<int>& sorted, int straggler)
+{
+	std::vector<int>::iterator pos = std::lower_bound(sorted.begin(), sorted.end(), straggler);
+	sorted.insert(pos, straggler);
 }
 
 void PmergeMe::insertionSortVector(std::vector<int>& arr, int left, int right)
@@ -210,6 +285,23 @@ void PmergeMe::mergeInsertSortVector(std::vector<int>& arr)
 	
 	// Create pairs and sort each pair
 	std::vector<std::pair<int, int> > pairs;
+	int straggler = -1;
+	bool hasStraggler = false;
+	createPairsVector(arr, pairs, straggler, hasStraggler);
+	
+	// Recursively sort and merge
+	std::vector<int> sorted = mergePairsVector(pairs);
+	
+	// Insert straggler if exists
+	if (hasStraggler)
+		insertStragglerVector(sorted, straggler);
+	
+	arr = sorted;
+}
+
+// Deque Helper Methods
+void PmergeMe::createPairsDeque(std::deque<int>& arr, std::deque<std::pair<int, int> >& pairs, int& straggler, bool& hasStraggler)
+{
 	size_t i;
 	for (i = 0; i + 1 < arr.size(); i += 2)
 	{
@@ -219,26 +311,16 @@ void PmergeMe::mergeInsertSortVector(std::vector<int>& arr)
 			pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
 	}
 	
-	// Handle odd element
-	int straggler = -1;
-	bool hasStraggler = false;
-	if (i < arr.size())
-	{
-		straggler = arr[i];
-		hasStraggler = true;
-	}
-	
-	// Recursively sort and merge
-	std::vector<int> sorted = mergePairsVector(pairs);
-	
-	// Insert straggler if exists
+	// Handle odd element (straggler)
+	hasStraggler = (i < arr.size());
 	if (hasStraggler)
-	{
-		std::vector<int>::iterator pos = std::lower_bound(sorted.begin(), sorted.end(), straggler);
-		sorted.insert(pos, straggler);
-	}
-	
-	arr = sorted;
+		straggler = arr[i];
+}
+
+void PmergeMe::insertStragglerDeque(std::deque<int>& sorted, int straggler)
+{
+	std::deque<int>::iterator pos = std::lower_bound(sorted.begin(), sorted.end(), straggler);
+	sorted.insert(pos, straggler);
 }
 
 void PmergeMe::insertionSortDeque(std::deque<int>& arr, int left, int right)
@@ -325,57 +407,31 @@ void PmergeMe::mergeInsertSortDeque(std::deque<int>& arr)
 	
 	// Create pairs and sort each pair
 	std::deque<std::pair<int, int> > pairs;
-	size_t i;
-	for (i = 0; i + 1 < arr.size(); i += 2)
-	{
-		if (arr[i] > arr[i + 1])
-			pairs.push_back(std::make_pair(arr[i + 1], arr[i]));
-		else
-			pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
-	}
-	
-	// Handle odd element
 	int straggler = -1;
 	bool hasStraggler = false;
-	if (i < arr.size())
-	{
-		straggler = arr[i];
-		hasStraggler = true;
-	}
+	createPairsDeque(arr, pairs, straggler, hasStraggler);
 	
 	// Recursively sort and merge
 	std::deque<int> sorted = mergePairsDeque(pairs);
 	
 	// Insert straggler if exists
 	if (hasStraggler)
-	{
-		std::deque<int>::iterator pos = std::lower_bound(sorted.begin(), sorted.end(), straggler);
-		sorted.insert(pos, straggler);
-	}
+		insertStragglerDeque(sorted, straggler);
 	
 	arr = sorted;
 }
 
+
+
+// Main Methods
 void PmergeMe::sort()
 {
-	struct timeval start, end;
-	
-	// Sort using vector
-	gettimeofday(&start, NULL);
-	mergeInsertSortVector(_vectorData);
-	gettimeofday(&end, NULL);
-	_vectorTime = getTimeInMicroseconds(start, end);
-	
-	// Sort using deque
-	gettimeofday(&start, NULL);
-	mergeInsertSortDeque(_dequeData);
-	gettimeofday(&end, NULL);
-	_dequeTime = getTimeInMicroseconds(start, end);
+	_vectorTime = measureVectorSort();
+	_dequeTime = measureDequeSort();
 }
 
 void PmergeMe::displayResults() const
 {
-	// Display "Before"
 	std::cout << "Before: ";
 	for (size_t i = 0; i < _originalData.size() && i < 5; i++)
 		std::cout << _originalData[i] << " ";
@@ -383,7 +439,7 @@ void PmergeMe::displayResults() const
 		std::cout << "[...]";
 	std::cout << std::endl;
 	
-	// Display "After"
+
 	std::cout << "After: ";
 	for (size_t i = 0; i < _vectorData.size() && i < 5; i++)
 		std::cout << _vectorData[i] << " ";
@@ -391,7 +447,7 @@ void PmergeMe::displayResults() const
 		std::cout << "[...]";
 	std::cout << std::endl;
 	
-	// Display times
+	
 	std::cout << "Time to process a range of " << _vectorData.size() 
 			  << " elements with std::vector : " << _vectorTime << " us" << std::endl;
 	std::cout << "Time to process a range of " << _dequeData.size() 

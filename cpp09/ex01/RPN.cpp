@@ -1,8 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   RPN.cpp                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/13 17:19:16 by ayasar            #+#    #+#             */
+/*   Updated: 2025/11/13 17:19:17 by ayasar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "RPN.hpp"
 
-RPN::RPN()
-{
-}
+RPN::RPN() {}
 
 RPN::RPN(const RPN& other)
 {
@@ -18,13 +28,23 @@ RPN& RPN::operator=(const RPN& other)
 	return *this;
 }
 
-RPN::~RPN()
-{
-}
+RPN::~RPN() {}
 
+
+// Token Validation Methods
 bool RPN::isOperator(const std::string& token) const
 {
 	return (token == "+" || token == "-" || token == "*" || token == "/");
+}
+
+bool RPN::isSingleDigit(const std::string& token) const
+{
+	return (token.length() == 1 && token[0] >= '0' && token[0] <= '9');
+}
+
+bool RPN::isNegativeSingleDigit(const std::string& token) const
+{
+	return (token.length() == 2 && token[0] == '-' && token[1] >= '0' && token[1] <= '9');
 }
 
 bool RPN::isNumber(const std::string& token) const
@@ -32,74 +52,150 @@ bool RPN::isNumber(const std::string& token) const
 	if (token.empty())
 		return false;
 	
-	// Check if it's a single digit (0-9) or negative single digit
-	if (token.length() == 1 && token[0] >= '0' && token[0] <= '9')
-		return true;
-	
-	// check negative single digit
-	if (token.length() == 2 && token[0] == '-' && token[1] >= '0' && token[1] <= '9')
-		return true;
-	
-	return false;
+	return (isSingleDigit(token) || isNegativeSingleDigit(token));
 }
 
-int RPN::performOperation(int a, int b, char op)
+bool RPN::isValidToken(const std::string& token) const
+{
+	return (isNumber(token) || isOperator(token));
+}
+
+
+// Arithmetic Operations
+int RPN::add(int a, int b) const
+{
+	return a + b;
+}
+
+int RPN::subtract(int a, int b) const
+{
+	return a - b;
+}
+
+int RPN::multiply(int a, int b) const
+{
+	return a * b;
+}
+
+int RPN::divide(int a, int b) const
+{
+	if (b == 0)
+		throw std::runtime_error("Error");
+	return a / b;
+}
+
+int RPN::performOperation(int a, int b, char op) const
 {
 	switch (op)
 	{
 		case '+':
-			return a + b;
+			return add(a, b);
 		case '-':
-			return a - b;
+			return subtract(a, b);
 		case '*':
-			return a * b;
+			return multiply(a, b);
 		case '/':
-			if (b == 0)
-				throw std::runtime_error("Error: Division by zero");
-			return a / b;
+			return divide(a, b);
 		default:
-			throw std::runtime_error("Error: Invalid operator");
+			throw std::runtime_error("Error");
 	}
 }
 
+
+// Stack Operations
+void RPN::pushNumber(int number)
+{
+	_stack.push(number);
+}
+
+int RPN::popNumber()
+{
+	if (_stack.empty())
+		throw std::runtime_error("Error");
+	
+		// BAK ???*
+	int value = _stack.top();
+	_stack.pop();
+	return value;
+}
+
+bool RPN::hasEnoughOperands(size_t required) const
+{
+	return _stack.size() >= required;
+}
+
+bool RPN::hasExactlyOneResult() const
+{
+	return _stack.size() == 1;
+}
+
+int RPN::getResult()
+{
+	if (!hasExactlyOneResult())
+		throw std::runtime_error("Error");
+	
+	return _stack.top();
+}
+
+
+// Token Processing
+int RPN::convertToNumber(const std::string& token) const
+{
+	return std::atoi(token.c_str());
+}
+
+void RPN::processNumber(const std::string& token)
+{
+	int number = convertToNumber(token);
+	pushNumber(number);
+}
+
+void RPN::processOperator(const std::string& token)
+{
+	if (!hasEnoughOperands(2))
+		throw std::runtime_error("Error");
+	
+	// Pop two operands (order matters for - and /)
+	int b = popNumber();
+	int a = popNumber();
+	
+	// Perform operation and push result
+	int result = performOperation(a, b, token[0]);
+	pushNumber(result);
+}
+
+void RPN::processToken(const std::string& token)
+{
+	if (!isValidToken(token))
+		throw std::runtime_error("Error");
+	
+	if (isNumber(token))
+		processNumber(token);
+	else if (isOperator(token))
+		processOperator(token);
+}
+
+// Expression Validation
+void RPN::validateExpression(const std::string& expression) const
+{
+	if (expression.empty())
+		throw std::runtime_error("Error");
+}
+
+
+
+
 int RPN::calculate(const std::string& expression)
 {
+	validateExpression(expression);
+	
 	std::istringstream iss(expression);
 	std::string token;
 	
 	while (iss >> token)
 	{
-		if (isNumber(token))
-		{
-			// Convert string to integer
-			int num = std::atoi(token.c_str());
-			_stack.push(num);
-		}
-		else if (isOperator(token))
-		{
-			// Need at least 2 operands
-			if (_stack.size() < 2)
-				throw std::runtime_error("Error: Insufficient operands");
-			
-			// Pop two operands (note the order!)
-			int b = _stack.top();
-			_stack.pop();
-			int a = _stack.top();
-			_stack.pop();
-			
-			// Perform operation and push result
-			int result = performOperation(a, b, token[0]);
-			_stack.push(result);
-		}
-		else
-		{
-			throw std::runtime_error("Error: Invalid token");
-		}
+		processToken(token);
 	}
 	
-	// Should have exactly one value left
-	if (_stack.size() != 1)
-		throw std::runtime_error("Error: Invalid expression");
-	
-	return _stack.top();
+	return getResult();
 }
