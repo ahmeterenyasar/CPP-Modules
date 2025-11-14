@@ -30,8 +30,6 @@ RPN& RPN::operator=(const RPN& other)
 
 RPN::~RPN() {}
 
-
-// Token Validation Methods
 bool RPN::isOperator(const std::string& token) const
 {
 	return (token == "+" || token == "-" || token == "*" || token == "/");
@@ -60,8 +58,6 @@ bool RPN::isValidToken(const std::string& token) const
 	return (isNumber(token) || isOperator(token));
 }
 
-
-// Arithmetic Operations
 int RPN::add(int a, int b) const
 {
 	return a + b;
@@ -101,8 +97,6 @@ int RPN::performOperation(int a, int b, char op) const
 	}
 }
 
-
-// Stack Operations
 void RPN::pushNumber(int number)
 {
 	_stack.push(number);
@@ -113,7 +107,6 @@ int RPN::popNumber()
 	if (_stack.empty())
 		throw std::runtime_error("Error");
 	
-		// BAK ???*
 	int value = _stack.top();
 	_stack.pop();
 	return value;
@@ -137,8 +130,6 @@ int RPN::getResult()
 	return _stack.top();
 }
 
-
-// Token Processing
 int RPN::convertToNumber(const std::string& token) const
 {
 	return std::atoi(token.c_str());
@@ -155,11 +146,9 @@ void RPN::processOperator(const std::string& token)
 	if (!hasEnoughOperands(2))
 		throw std::runtime_error("Error");
 	
-	// Pop two operands (order matters for - and /)
 	int b = popNumber();
 	int a = popNumber();
 	
-	// Perform operation and push result
 	int result = performOperation(a, b, token[0]);
 	pushNumber(result);
 }
@@ -175,15 +164,11 @@ void RPN::processToken(const std::string& token)
 		processOperator(token);
 }
 
-// Expression Validation
 void RPN::validateExpression(const std::string& expression) const
 {
 	if (expression.empty())
 		throw std::runtime_error("Error");
 }
-
-
-
 
 int RPN::calculate(const std::string& expression)
 {

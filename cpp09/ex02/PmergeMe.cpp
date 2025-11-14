@@ -32,11 +32,8 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other)
 	return *this;
 }
 
-PmergeMe::~PmergeMe()
-{
-}
+PmergeMe::~PmergeMe() {}
 
-// Input validations
 bool PmergeMe::hasOnlyDigits(const std::string& str, size_t start) const
 {
 	for (size_t i = start; i < str.length(); i++)
@@ -108,7 +105,6 @@ void PmergeMe::parseInput(int argc, char** argv)
 		throw std::invalid_argument("Error");
 }
 
-// Time Measurement
 double PmergeMe::getTimeInMicroseconds(struct timeval start, struct timeval end)
 {
 	return (end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
@@ -132,8 +128,6 @@ double PmergeMe::measureDequeSort()
 	return getTimeInMicroseconds(start, end);
 }
 
-
-// Jacobsthal Sequence
 int PmergeMe::jacobsthal(int n)
 {
 	if (n == 0)
@@ -157,6 +151,15 @@ int PmergeMe::jacobsthal(int n)
 std::vector<int> PmergeMe::generateInsertionOrder(int n)
 {
 	std::vector<int> order;
+	
+	if (n <= 0)
+		return order;
+	
+	order.push_back(1);
+	
+	if (n == 1)
+		return order;
+	
 	int jacobIndex = 3;
 	int lastJacob = 1;
 	
@@ -176,8 +179,6 @@ std::vector<int> PmergeMe::generateInsertionOrder(int n)
 	return order;
 }
 
-
-// Vector Helper Methods
 void PmergeMe::createPairsVector(std::vector<int>& arr, std::vector<std::pair<int, int> >& pairs, int& straggler, bool& hasStraggler)
 {
 	size_t i;
@@ -189,7 +190,6 @@ void PmergeMe::createPairsVector(std::vector<int>& arr, std::vector<std::pair<in
 			pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
 	}
 	
-	// Handle odd element (straggler)
 	hasStraggler = (i < arr.size());
 	if (hasStraggler)
 		straggler = arr[i];
@@ -201,22 +201,6 @@ void PmergeMe::insertStragglerVector(std::vector<int>& sorted, int straggler)
 	sorted.insert(pos, straggler);
 }
 
-void PmergeMe::insertionSortVector(std::vector<int>& arr, int left, int right)
-{
-	for (int i = left + 1; i <= right; i++)
-	{
-		int key = arr[i];
-		int j = i - 1;
-		
-		while (j >= left && arr[j] > key)
-		{
-			arr[j + 1] = arr[j];
-			j--;
-		}
-		arr[j + 1] = key;
-	}
-}
-
 std::vector<int> PmergeMe::mergePairsVector(std::vector<std::pair<int, int> >& pairs)
 {
 	if (pairs.empty())
@@ -225,17 +209,15 @@ std::vector<int> PmergeMe::mergePairsVector(std::vector<std::pair<int, int> >& p
 	if (pairs.size() == 1)
 	{
 		std::vector<int> result;
-		result.push_back(pairs[0].second);
 		result.push_back(pairs[0].first);
+		result.push_back(pairs[0].second);
 		return result;
 	}
 	
-	// Extract larger elements (main chain)
 	std::vector<int> mainChain;
 	for (size_t i = 0; i < pairs.size(); i++)
 		mainChain.push_back(pairs[i].second);
 	
-	// Sort main chain recursively by creating new pairs
 	std::vector<std::pair<int, int> > newPairs;
 	for (size_t i = 0; i + 1 < mainChain.size(); i += 2)
 	{
@@ -250,12 +232,10 @@ std::vector<int> PmergeMe::mergePairsVector(std::vector<std::pair<int, int> >& p
 	
 	std::vector<int> sorted = mergePairsVector(newPairs);
 	
-	// Build the pending elements list (smaller elements from pairs)
 	std::vector<int> pending;
 	for (size_t i = 0; i < pairs.size(); i++)
 		pending.push_back(pairs[i].first);
 	
-	// Insert pending elements using Jacobsthal sequence
 	std::vector<int> insertOrder = generateInsertionOrder(pending.size());
 	
 	for (size_t i = 0; i < insertOrder.size(); i++)
@@ -277,29 +257,19 @@ void PmergeMe::mergeInsertSortVector(std::vector<int>& arr)
 	if (arr.size() <= 1)
 		return;
 	
-	if (arr.size() <= 10)
-	{
-		insertionSortVector(arr, 0, arr.size() - 1);
-		return;
-	}
-	
-	// Create pairs and sort each pair
 	std::vector<std::pair<int, int> > pairs;
 	int straggler = -1;
 	bool hasStraggler = false;
 	createPairsVector(arr, pairs, straggler, hasStraggler);
 	
-	// Recursively sort and merge
 	std::vector<int> sorted = mergePairsVector(pairs);
 	
-	// Insert straggler if exists
 	if (hasStraggler)
 		insertStragglerVector(sorted, straggler);
 	
 	arr = sorted;
 }
 
-// Deque Helper Methods
 void PmergeMe::createPairsDeque(std::deque<int>& arr, std::deque<std::pair<int, int> >& pairs, int& straggler, bool& hasStraggler)
 {
 	size_t i;
@@ -311,7 +281,6 @@ void PmergeMe::createPairsDeque(std::deque<int>& arr, std::deque<std::pair<int, 
 			pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
 	}
 	
-	// Handle odd element (straggler)
 	hasStraggler = (i < arr.size());
 	if (hasStraggler)
 		straggler = arr[i];
@@ -323,22 +292,6 @@ void PmergeMe::insertStragglerDeque(std::deque<int>& sorted, int straggler)
 	sorted.insert(pos, straggler);
 }
 
-void PmergeMe::insertionSortDeque(std::deque<int>& arr, int left, int right)
-{
-	for (int i = left + 1; i <= right; i++)
-	{
-		int key = arr[i];
-		int j = i - 1;
-		
-		while (j >= left && arr[j] > key)
-		{
-			arr[j + 1] = arr[j];
-			j--;
-		}
-		arr[j + 1] = key;
-	}
-}
-
 std::deque<int> PmergeMe::mergePairsDeque(std::deque<std::pair<int, int> >& pairs)
 {
 	if (pairs.empty())
@@ -347,17 +300,15 @@ std::deque<int> PmergeMe::mergePairsDeque(std::deque<std::pair<int, int> >& pair
 	if (pairs.size() == 1)
 	{
 		std::deque<int> result;
-		result.push_back(pairs[0].second);
 		result.push_back(pairs[0].first);
+		result.push_back(pairs[0].second);
 		return result;
 	}
 	
-	// Extract larger elements (main chain)
 	std::deque<int> mainChain;
 	for (size_t i = 0; i < pairs.size(); i++)
 		mainChain.push_back(pairs[i].second);
 	
-	// Sort main chain recursively
 	std::deque<std::pair<int, int> > newPairs;
 	for (size_t i = 0; i + 1 < mainChain.size(); i += 2)
 	{
@@ -372,12 +323,10 @@ std::deque<int> PmergeMe::mergePairsDeque(std::deque<std::pair<int, int> >& pair
 	
 	std::deque<int> sorted = mergePairsDeque(newPairs);
 	
-	// Build pending elements list
 	std::deque<int> pending;
 	for (size_t i = 0; i < pairs.size(); i++)
 		pending.push_back(pairs[i].first);
 	
-	// Insert pending elements using Jacobsthal sequence
 	std::vector<int> insertOrder = generateInsertionOrder(pending.size());
 	
 	for (size_t i = 0; i < insertOrder.size(); i++)
@@ -399,31 +348,19 @@ void PmergeMe::mergeInsertSortDeque(std::deque<int>& arr)
 	if (arr.size() <= 1)
 		return;
 	
-	if (arr.size() <= 10)
-	{
-		insertionSortDeque(arr, 0, arr.size() - 1);
-		return;
-	}
-	
-	// Create pairs and sort each pair
 	std::deque<std::pair<int, int> > pairs;
 	int straggler = -1;
 	bool hasStraggler = false;
 	createPairsDeque(arr, pairs, straggler, hasStraggler);
 	
-	// Recursively sort and merge
 	std::deque<int> sorted = mergePairsDeque(pairs);
 	
-	// Insert straggler if exists
 	if (hasStraggler)
 		insertStragglerDeque(sorted, straggler);
 	
 	arr = sorted;
 }
 
-
-
-// Main Methods
 void PmergeMe::sort()
 {
 	_vectorTime = measureVectorSort();

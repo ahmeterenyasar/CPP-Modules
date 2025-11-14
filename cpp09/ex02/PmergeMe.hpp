@@ -34,36 +34,30 @@ private:
 	double				_vectorTime;
 	double				_dequeTime;
 
-	// Input Validation
 	void				validateInput(const std::string& str);
 	bool				isValidNumber(const std::string& str) const;
 	bool				isInIntRange(const std::string& str) const;
 	bool				hasOnlyDigits(const std::string& str, size_t start) const;
 
-	// Vector Operations
 	void				mergeInsertSortVector(std::vector<int>& arr);
 	void				insertionSortVector(std::vector<int>& arr, int left, int right);
 	std::vector<int>	mergePairsVector(std::vector<std::pair<int, int> >& pairs);
 	void				createPairsVector(std::vector<int>& arr, std::vector<std::pair<int, int> >& pairs, int& straggler, bool& hasStraggler);
 	void				insertStragglerVector(std::vector<int>& sorted, int straggler);
 	
-	// Deque Operations
 	void				mergeInsertSortDeque(std::deque<int>& arr);
 	void				insertionSortDeque(std::deque<int>& arr, int left, int right);
 	std::deque<int>		mergePairsDeque(std::deque<std::pair<int, int> >& pairs);
 	void				createPairsDeque(std::deque<int>& arr, std::deque<std::pair<int, int> >& pairs, int& straggler, bool& hasStraggler);
 	void				insertStragglerDeque(std::deque<int>& sorted, int straggler);
 
-	// Jacobsthal Sequence
 	int					jacobsthal(int n);
 	std::vector<int>	generateInsertionOrder(int n);
 	
-	// Time Measurement
 	double				getTimeInMicroseconds(struct timeval start, struct timeval end);
 	double				measureVectorSort();
 	double				measureDequeSort();
 
-	// Copy prevention (Orthodox Canonical Form)
 	PmergeMe(const PmergeMe& other);
 	PmergeMe& operator=(const PmergeMe& other);
 
