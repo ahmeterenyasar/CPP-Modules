@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 17:19:48 by ayasar            #+#    #+#             */
-/*   Updated: 2025/11/13 18:05:10 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/11/15 13:56:55 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,8 @@ std::vector<int> PmergeMe::mergePairsVector(std::vector<std::pair<int, int> >& p
 		mainChain.push_back(pairs[i].second);
 	
 	std::vector<std::pair<int, int> > newPairs;
-	for (size_t i = 0; i + 1 < mainChain.size(); i += 2)
+	size_t i;
+	for (i = 0; i + 1 < mainChain.size(); i += 2)
 	{
 		if (mainChain[i] > mainChain[i + 1])
 			newPairs.push_back(std::make_pair(mainChain[i + 1], mainChain[i]));
@@ -227,20 +228,25 @@ std::vector<int> PmergeMe::mergePairsVector(std::vector<std::pair<int, int> >& p
 			newPairs.push_back(std::make_pair(mainChain[i], mainChain[i + 1]));
 	}
 	
-	if (mainChain.size() % 2 == 1)
-		newPairs.push_back(std::make_pair(mainChain[mainChain.size() - 1], mainChain[mainChain.size() - 1]));
+	bool hasMainStraggler = (i < mainChain.size());
+	int mainStraggler = -1;
+	if (hasMainStraggler)
+		mainStraggler = mainChain[i];
 	
 	std::vector<int> sorted = mergePairsVector(newPairs);
 	
+	if (hasMainStraggler)
+		insertStragglerVector(sorted, mainStraggler);
+	
 	std::vector<int> pending;
-	for (size_t i = 0; i < pairs.size(); i++)
-		pending.push_back(pairs[i].first);
+	for (size_t j = 0; j < pairs.size(); j++)
+		pending.push_back(pairs[j].first);
 	
 	std::vector<int> insertOrder = generateInsertionOrder(pending.size());
 	
-	for (size_t i = 0; i < insertOrder.size(); i++)
+	for (size_t j = 0; j < insertOrder.size(); j++)
 	{
-		int idx = insertOrder[i] - 1;
+		int idx = insertOrder[j] - 1;
 		if (idx >= 0 && idx < static_cast<int>(pending.size()))
 		{
 			int value = pending[idx];
@@ -310,7 +316,8 @@ std::deque<int> PmergeMe::mergePairsDeque(std::deque<std::pair<int, int> >& pair
 		mainChain.push_back(pairs[i].second);
 	
 	std::deque<std::pair<int, int> > newPairs;
-	for (size_t i = 0; i + 1 < mainChain.size(); i += 2)
+	size_t i;
+	for (i = 0; i + 1 < mainChain.size(); i += 2)
 	{
 		if (mainChain[i] > mainChain[i + 1])
 			newPairs.push_back(std::make_pair(mainChain[i + 1], mainChain[i]));
@@ -318,20 +325,25 @@ std::deque<int> PmergeMe::mergePairsDeque(std::deque<std::pair<int, int> >& pair
 			newPairs.push_back(std::make_pair(mainChain[i], mainChain[i + 1]));
 	}
 	
-	if (mainChain.size() % 2 == 1)
-		newPairs.push_back(std::make_pair(mainChain[mainChain.size() - 1], mainChain[mainChain.size() - 1]));
+	bool hasMainStraggler = (i < mainChain.size());
+	int mainStraggler = -1;
+	if (hasMainStraggler)
+		mainStraggler = mainChain[i];
 	
 	std::deque<int> sorted = mergePairsDeque(newPairs);
 	
+	if (hasMainStraggler)
+		insertStragglerDeque(sorted, mainStraggler);
+	
 	std::deque<int> pending;
-	for (size_t i = 0; i < pairs.size(); i++)
-		pending.push_back(pairs[i].first);
+	for (size_t j = 0; j < pairs.size(); j++)
+		pending.push_back(pairs[j].first);
 	
 	std::vector<int> insertOrder = generateInsertionOrder(pending.size());
 	
-	for (size_t i = 0; i < insertOrder.size(); i++)
+	for (size_t j = 0; j < insertOrder.size(); j++)
 	{
-		int idx = insertOrder[i] - 1;
+		int idx = insertOrder[j] - 1;
 		if (idx >= 0 && idx < static_cast<int>(pending.size()))
 		{
 			int value = pending[idx];
@@ -370,18 +382,18 @@ void PmergeMe::sort()
 void PmergeMe::displayResults() const
 {
 	std::cout << "Before: ";
-	for (size_t i = 0; i < _originalData.size() && i < 5; i++)
+	for (size_t i = 0; i < _originalData.size(); i++)
 		std::cout << _originalData[i] << " ";
-	if (_originalData.size() > 5)
-		std::cout << "[...]";
+	// if (_originalData.size() > 5)
+	// 	std::cout << "[...]";
 	std::cout << std::endl;
 	
 
 	std::cout << "After: ";
-	for (size_t i = 0; i < _vectorData.size() && i < 5; i++)
+	for (size_t i = 0; i < _vectorData.size(); i++)
 		std::cout << _vectorData[i] << " ";
-	if (_vectorData.size() > 5)
-		std::cout << "[...]";
+	// if (_vectorData.size() > 5)
+	// 	std::cout << "[...]";
 	std::cout << std::endl;
 	
 	

@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 17:19:16 by ayasar            #+#    #+#             */
-/*   Updated: 2025/11/13 17:19:17 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/11/15 09:37:05 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,10 +174,10 @@ int RPN::calculate(const std::string& expression)
 {
 	validateExpression(expression);
 	
-	std::istringstream iss(expression);
+	std::istringstream stream(expression);
 	std::string token;
 	
-	while (iss >> token)
+	while (stream >> token)
 	{
 		processToken(token);
 	}

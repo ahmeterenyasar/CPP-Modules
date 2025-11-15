@@ -43,18 +43,6 @@ std::string BitcoinExchange::trim(const std::string& str) const {
 	return str.substr(start, end - start);
 }
 
-/***
- * Leap Year Rules:
- * - Can be divided by 4 AND not divided by 100
- * - OR Can be divided by 400
- * - Otherwise, not a leap year
- * 
- * Examples:
- * - 2000: leap year (divisible by 400)
- * - 1900: not a leap year (divisible by 100 but not by 400)
- * - 2004: leap year (divisible by 4, not by 100)
- * - 2001: not a leap year (not divisible by 4)
- ***/
 bool BitcoinExchange::isLeapYear(int year) const {
 	if (year % 400 == 0)
 		return true;
@@ -181,7 +169,7 @@ void BitcoinExchange::processInputFile(const std::string& filename) {
 
 		float value;
 		if (!isValidValue(valueStr, value)) {
-			std::cout << "Error: bad input => " << valueStr << std::endl;
+			std::cout << "Error: bad value input => " << valueStr << std::endl;
 			continue;
 		}
 

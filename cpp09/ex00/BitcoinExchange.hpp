@@ -6,7 +6,7 @@
 /*   By: ayasar <ayasar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 17:01:24 by ayasar            #+#    #+#             */
-/*   Updated: 2025/11/13 17:01:25 by ayasar           ###   ########.fr       */
+/*   Updated: 2025/11/15 12:38:04 by ayasar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ class BitcoinExchange {
 private:
 	std::map<std::string, float> _database;
 
-	BitcoinExchange(const BitcoinExchange& other);
+	BitcoinExchange(const BitcoinExchange &other);
 	BitcoinExchange& operator=(const BitcoinExchange& other);
 
 	bool isValidDate(const std::string& date) const;
